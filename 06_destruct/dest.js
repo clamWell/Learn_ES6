@@ -44,13 +44,14 @@ function destObj(){
 	// 이 방법으로도 myName 이라는 새로운 변수의 값이 obj 객체의 name 키의 값으로,
 	// myAge라는 새로운 변수의 값이 obj 객체의 age 키의 값을 할당된다.
 }
-destObj();
+//destObj();
 
 
 
-// 3. 디스트럭튜링을 활용해 json 파싱
-var geoData = [ // 아래의 json을 파싱받았다고 가정
-[
+// 3. 디스트럭튜링을 활용해 json 
+
+ // 아래의 json을 파싱받았다고 가정
+var geoData = [ 
   {
     "geo": "종로구",
     "code": "11010",
@@ -68,9 +69,55 @@ var geoData = [ // 아래의 json을 파싱받았다고 가정
 ];
 
 //여기서 내가 특정 json 데이터 값만을 추출하여서 새롭게 변수로 지정해주고 싶으면?
+function destJson(){
+	let [ ,jonglo] = geoData; //goeData json의 두번째 객체가 jonglo라는 변수에 지정된다.
+	let {geo, geo_code} = jonglo; //jonglo 객체에서도 또 원하는 key만 뽑아서 변수로 지정해준다.
+	console.log(jonglo)
+	console.log(geo, geo_code)
+}
+//destJson();
+
+function destJsonMore(){
+	let [ , {geo, geo_code}] = geoData; //위의 두번에 걸친 문법을 더 축약해서 이렇게 작성이 가능하다.
+	console.log(geo, geo_code)
+}
+
+//destJsonMore();
 
 
 
 
+// 4. 디스트럭튜링을 활용해 이벤트 객체 전달
+
+function getGeoList( [ ,geoList] ){ // 여기서 디스트럭튜링이 가능하다. 이렇게 되면 전달받은 배열의 두번째 인덱스.
+	console.log(geoList);
+
+};
+
+function getGeoList2( [ ,{geo, geo_code}] ){ // 전달받은 배열의 두번째 인덱스, 그중에서 geo key의 값.
+	console.log(geo, geo_code);
+
+};
+
+//이렇게 json 형태의 배열 전체를 전달하고
+getGeoList(geoData); 
+getGeoList2(geoData); 
+
+//이벤트 객체도 전달 및 디스트럭튜링이 가능하다. 아래의 html div node가 있다고 가정하고
+function sendEvOb(){
+	document.querySelector("div").addEventListener("click", function(e){
+		console.log(e); // 이벤트 객체가 출력된다.
+	});
+
+	document.querySelector("div").addEventListener("click", function(e){
+		console.log(e.target); // 이벤트 객체 중 target 값이 출력된다.
+	});
+
+	// 디스트럭튜링이 적용되면?
+	document.querySelector("div").addEventListener("click", function({target}){ //전달 받은 이벤틑 객체중 target만
+		console.log(target.innterText); // target객체의 innerText 값이 출력된다.
+	});
+
+};
 
 

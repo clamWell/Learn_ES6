@@ -22,7 +22,6 @@ function destArr(){
 
 //destArr();
 
-
 // 2. 객체 디스트럭튜링
 // 이러한 방식은 객체에서도 적용된다.
 function destObj(){

@@ -34,9 +34,54 @@ const data = [
 //ES6는 아래와 같이 ``사이에서 html 문자열과 데이터의 결합을 허용한다.
 //데이터는 jquery의 $표시와 중괄호 사이에 객체명으로 호출해준다.
 
-const template = `<div> Welcome ${data[0].name} ~ :) </div>`;
-console.log(template); // <div> Welcome Starbuck ~ :) </div> 출력된다.
+function learnTempBasic(){
+	const template = `<div> Welcome ${data[0].name} ~ :) </div>`;
+	console.log(template); // <div> Welcome Starbuck ~ :) </div> 출력된다.
+}
+
+//learnTempBasic();
 
 
+function learnTempLiterals(){
 
+	function fn(tags, name, items){
+		//console.log(tags);
+
+		//tags는 html tag 영역이 배열로 들어온다.
+		//name은 오브젝트의 name 변수
+		//items는 아이템 배열
+		
+		if( typeof items === "undefined"){
+			items = "주문 가능한 상품이 지금은 없습니다.";
+		}
+		
+		return (tags[0] + name + tags[1] + items + tags[2]);
+		// <div> Welcome twosome ~ :) </div><h2>주문가능항목</h2><div>주문 가능한 상품이 지금은 없습니다.</div>
+
+
+	};
+
+	// 1. 아래는 문제없다.
+	const template1 = `<div> Welcome ${data[0].name} ~ :) </div><h2>주문가능항목</h2><div>${data[0].items}</div>`;
+	//console.log(template1);
+
+	// 2. 다만 두번째 배열은 items 가 없기 때문에 undefined가 나와버린다.
+	const template2 = `<div> Welcome ${data[1].name} ~ :) </div><h2>주문가능항목</h2><div>${data[1].items}</div>`;
+	//console.log(template2);
+
+	// 3. 이를 위해서 템플릿을 함수로 감싼후, 해당 함수에서 일종의 정제 과정을 거칠 수 있다.
+	const templateWithFn = fn`<div> Welcome ${data[1].name} ~ :) </div><h2>주문가능항목</h2><div>${data[1].items}</div>`;
+	//console.log(templateWithFn);
+
+	//4. 이 과정을 데이터의 갯수만큼 forEach를 돌려서 자동화 해본다.
+	data.forEach(function(v){
+		let temp = fn`<div> Welcome ${v.name} ~ :) </div><h2>주문
+		가능
+		항목</h2><div>${v.items}</div>`;
+		console.log(temp);
+	})
+
+}	
+
+learnTempLiterals();
 

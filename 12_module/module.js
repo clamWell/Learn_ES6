@@ -1,96 +1,77 @@
 /*****
 
-ES6 arrow 함수
+ES6 module 구현
+
+모듈이란 애플리케이션을 구성하는 부품, 재사용 가능한 코드 조각
+기존 자바스크립트의 한계 중 하나가 바로 이 모듈 기능이 없다는 것.
+그 이유 중 하나는 자바스크립트는 외부에서 스크립트 파일을 가져오더라도
+하나의 전역 객체, 전역 스코프를 사용하기 때문에 변수가 중복되고 공유되는 문제를
+해결 할 수 없었기 때문. 모듈을 쓰기 위해서는 모듈별의 독립적인 스코프(모듈스포크)가 지원되어야 한다.
+
+이러한 태생적 한계를 극복하고 자바스크립트 문법으로 모듈 시스템부터,
+서버 사이드 작업을 수행을 가능하게 해주는 node.js가 탄생하면서
+자바스크립트에 module을 도입시키려는 움직임이 시작됐다.
+
+그리고 ES6에서부터 클라이언트 사이드 자바스크립트에서도 동작하는 모듈 기능이 추가됐다.
+최신 모던 브라우저(Chrome 61, FF 60, SF 10.1, Edge 16 이상)에서 ES6의 모듈 기능을 사용할 수 있다.
 
 *****/
+//ES6의 모듈기능을 브라우저 등에서 문제없이 사용하기 위해서는
+//babel과 webpack모듈 번들러 등을 이용해 개발 환경을 구축해야한다.
+//그전에 먼저 간단하게 모듈의 문법을 살펴본다.
 
-function arrowbasic(){
-	setTimeout(function(){
-		console.log("자바스크립트의 set time out 내장함수");
-	}, 500);
-	setTimeout(()=>{
-		console.log("이렇게 축약해서 표현해보면 어떨까?");
-	}, 1500);
-};
 
-//arrowbasic()
+//일반적으로 js는 전역스코프와 전역 객체를 공유하기 때문에 외부 스크립트를 여러개 끌어올 때
+//최종적으로 전역스코프에서 각각의 외부 스크립트에서 선언된 변수가 공유되고, 재할당되는 문제가 발생한다.
 
-function arrowWithArr(){
-	let newArr = [1,2,3,4,5];
+let myNumb = 1; 
+console.log(window.myNumb); //1
 
-	//기본 es5
-	newArr.map(function(value,index,item){
-		return value*2;
-	});
+let myNumb = 2; 
+console.log(window.myNumb); //2
 
-	//기본 es6
-	let v2 = newArr.map((v)=>{
-		return v*2;
-	});
-	console.log(v2);
+//모듈 시스템에서는 파일 자체의 스코프가 제공된다.
+//즉, ES6 모듈은 독자적인 모듈 스코프를 갖는다.
+//만약 특정 모듈 스크립트에서 어떤 변수가 전역으로 선언되더라도
+//그 변수는 window 객체에서 호출이 되지 않는다. window 객체의 프로퍼티가 아니기 때문이다.
+//또한 특정 모듈 내에서 선언한 변수는 모듈 외부에서 참조할 수 없다. 스코프가 다르기 때문이다.
 
-	// 더 단순한 구문의 경우 아래처럼 표현할 수도 있다.
-	let v3 = newArr.map( (v)=> v*3 );
-	console.log(v3);
+//이때 모듈 내의 변수, 메소드 등 식별자를 외부에서도 접근할 수 있게 해주는 것이 바로 export 키워드다
+//export 가 붙은 변수, 메소드, 클래스 등은 외부에서도 접근이 가능해진다.
+
+// 변수의 공개
+export const pi = Math.PI;
+
+// 함수의 공개
+export function square(x) {
+  return x * x;
 }
-//arrowWithArr()
 
-//기존의 콜백 함수들 내부에서는
-//콜백함수가 일정 시점 이후에 실행되는 것이기 때문에 this가 window를 가리켰다. 
-//그렇기에 만약 callback이 호출되는 객체를 this로 접근하기 위해서는 .bind()가 필요했다.
-//그러나 arrow를 이용한 함수 표현식에서는 이 과정이 필요없다.
-//콜백함수에서 this를 써주고 별도로 .bind(this)를 해주지 않더라도
-//이 this가 콜백이 호출되는 상위 객체를 가리키게 된다.
+// 클래스의 공개
+export class Person {
+  constructor(name) {
+    this.name = name;
+  }
+}
 
-function arrowAndThis(){
-	const obj = { // 객체를 만들어준다
-		runTimeout: function(){
-			setTimeout(function(){
-				console.log(this===window);
-			}, 500);
-		}	
-	}
-	
-	console.log( obj );
-	//obj.runTimeout();
-
-};
-
-//arrowAndThis();
-
-function defaultPara(){
-
-	//이것이 기존의 함수 인자의 기본값 설정 방법
-	function sum(value,size){
-		var size = size || 1;
-		return value*size;
-	};
-
-	//ES6가 지원하는 기본값 설정 방법
-	function sum2(value,size=1){
-		return value*size;
-	};
-
-	function sum3(value,size={v:1}){
-		return value*size.v;
-	};
-	console.log( sum3(3, {v:3}) );
-};
-
-//defaultPara();
+// 이렇게 한번에 객체로 모아서 export 하기도 한다.
+// export { pi, square, Person };
 
 
 
-//함수에 인자로 받은 argument는 argument 객체이기 때문에 배열의 메소드는 쓸 수 없다. 
-//그래서 from 함수를 사용해서 let arguArr = Array.from(arguments); 이렇게 배열로 바꿔주기도 하는데
-//굳이 이렇게 하지 않아도 ES6에서 인자를 '진짜 배열'로 바꿔서 받는 방법이 있다.
-//함수를 선언할때 ...arg 라고 쓰게되면 함수로 넘어온 인자들은 배열로 변환되서 사용이 된다.
+// 반대로 이렇게 외부에 공개된 모듈의 객체는 import 키워드를 통해 가져올 수 있다.
+import { pi, square, Person } from './lib.mjs';
 
-function checkNum(...arg){
-	console.log(toString.call(arg)); //object array 출력
-	const result = arg.every( (v) => typeof(v) === "number");
-	return result;
-};
+console.log(pi);         // 3.141592653589793
+console.log(square(10)); // 100
+console.log(new Person('Lee')); // Person { name: 'Lee' }
 
-console.log( checkNum(1,2,3,4,5,"6") ); //false
-console.log( checkNum(1,2,3,4) ); //true
+
+//해당 경로에서 log라는 객체 모듈을 임포팅해온다.
+import {log} from "./myLogger.js" 
+
+//임포팅해온 log 객체를 사용한다.
+log("my first test data");
+
+
+

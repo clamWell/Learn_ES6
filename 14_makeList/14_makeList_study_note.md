@@ -17,7 +17,7 @@ deserver를 실행하기에 앞서 webpack 번들러를 사용해 bundle.js가 �
 npm 스크립트를 사용해 bundle.js를 생성해준다.
 >$ npm run build 
 
-• 생성이 되었다면 터널에서 weppack-dev-server를 실행해준다.
+• 생성이 되었다면 터널에서 `weppack-dev-server`를 실행해준다.
 >$ npm run devserver 
 >multi (webpack)-dev-server/client?http://localhost:8080 
 
@@ -28,7 +28,7 @@ npm 스크립트를 사용해 bundle.js를 생성해준다.
 devserver를 설치하고 public path를 config 에서 꼭 지정해줘야한다.
 최종적으로 bundle.js가 위치해 있는 디렉토리를 public path로 지정해줘야, 
 devserver는 변화를 감지하고 이 public path 에 위치한 js를 참조해 브라우저에 반영해준다.
-만약 bundle.js 가 최상의/dist/js/ 아래 있다고 한다면 public path는 다음과 같이 지정해준다.
+만약 bundle.js 가 `root/dist/js/` 아래 있다고 한다면 public path는 다음과 같이 지정해준다.
 >publicPath: '/dist/js'
 
 새로고침 후 콘솔에 아래 로그가 찍히면, 정상적으로 라이브 모드로 dev server가 동작중이다.
@@ -37,9 +37,9 @@ devserver는 변화를 감지하고 이 public path 에 위치한 js를 참조�
 
 ## 2. 모듈 구현
 
-• 설정한 개발환경에서 모듈 시스템이 구현되는지 확인하기 위해서 index.js 외에
-main.js 파일을 같은 디렉토리에 만들고, 여기서 Blog 클래스를 생성해서 export 해준다.
-다시 index.js로 돌아와 blog를 import 해주고, 
+• 설정한 개발환경에서 모듈 시스템이 구현되는지 확인하기 위해서 `index.js` 외에
+`main.js` 파일을 같은 디렉토리에 만들고, 여기서 Blog 클래스를 생성해서 export 해준다.
+다시 `index.js`로 돌아와 blog를 import 해주고, 
 모듈로 가져온 클래스를 사용해 인스턴스를 생성한다.
 
 [main.js]
@@ -65,11 +65,11 @@ const myBlog = new blog();
 
 ## 3. XHR(XMLHttpRequest) 통신
 
-• main.js 에서 blog 클래스를 수정해준다. 
+• `main.js` 에서 blog 클래스를 수정해준다. 
 blog 클래스 내부에서 ajax 통신을 이용해 외부 API의 데이터를 받아오고 이를 객체로 변환해주려 한다.
 
-• 클래스에서 데이터 가져오기를 init하는 메소드(setInitData), 실제 가져오는 작동을하는 메소드(getData)를 만든다. 생성자 함수는 데이터 가져오기를 init하는 메소드를 실행시키고 API 링크를 넘겨준다.
-이제 blog 인스턴스가 생성되면 getData() 메소드가 호출되면서 ajax 통신이 이뤄진다.
+• 클래스에서 데이터 가져오기를 init하는 메소드 `setInitData()`, 실제 가져오는 작동을하는 메소드 `getData()`를 만든다. 생성자 함수는 데이터 가져오기를 init하는 메소드를 실행시키고 API 링크를 넘겨준다.
+이제 blog 인스턴스가 생성되면` getData()` 메소드가 호출되면서 ajax 통신이 이뤄진다.
 
 [main.js]
 ```javascript
@@ -114,8 +114,8 @@ export default Blog;
 >극장판 포켓몬스터 베스트 위시 「비크티니와 흑의 영웅 제크로무」
 
 
-•list 객체를 받아와 DOM node를 생성하는 메소드를 작성해준다.
-ES6의 템플릿 리터럴을 이용해서 html node를 추가해준다.
+•list 객체를 받아와 HTML 태그를 생성하는 메소드를 작성해준다.
+ES6의 템플릿 리터럴을 이용해서 HTML 태그를 추가해준다.
 
 [main.js]
 ```javascript
@@ -130,10 +130,11 @@ insertPosts(list){
 ```
 
 ## 4. init, set 자료에 데이터 추가
+
 •init 구현
 바로 데이터를 불러오는 것이 아니라 이벤트리스너를 추가해,
-버튼을 클릭하면 블로그가 init되도록 클래스의 구조를 변경한다. 
-생성자 함수에서 이벤트리스너 추가 메소드들, 데이터필드를 registerEvents()로 이동, 분리시켜준다.
+버튼을 클릭하면 블로그가 init 되도록 클래스의 구조를 변경한다. 
+생성자 함수에서 이벤트리스너 추가 메소드들, 데이터필드를 `registerEvents()`로 이동 및 분리시켜준다.
 
 [main.js]
 ```javascript
@@ -173,8 +174,8 @@ registerEvents(){
 ```
 
 •찜한 목록을 담는 set 객체 추가
-Set은 ES6에서 추가된 중복없이 유일한 값(unique value)을 저장하려고 할때 사용하는 객체다. 일종의 배열.
-.add() 메소드와 .has() 메소드를 통해 이미 해당 값이 존재하는지 체크할 때 유용하다.
+`Set`은 ES6에서 추가된 중복없이 유일한 값(unique value)을 저장하려고 할때 사용하는 객체다. 일종의 배열.
+`.add()` 메소드와 `.has()` 메소드를 통해 이미 해당 값이 존재하는지 체크할 때 유용하다.
 [main.js]
 ```javascript
 constructor(){
@@ -195,7 +196,7 @@ registerEvents(){
 }
 ```
 
-•중복으로 선언되는 변수는 피해준다. 생성자 함수에 setInitVar 메소드를 선언해주고,
+•중복으로 선언되는 변수는 피해준다. 생성자 함수에 `setInitVar()` 메소드를 선언해주고,
 이 메소드에서 해당 클래스에서 공통적으로 사용하신 변수들을 선언해준다.
 [main.js]
 ```javascript
@@ -212,11 +213,11 @@ setInitVar(){
 ```
 
 •this 바인딩 문제 해결
-Class blog의 데이터 필드로써 blogList를 선언해주고 다른 메소드들 에서 this.blogList로 호출하려하자
-getData의 콜백함수였던 insertPosts()에서 오류가 발생한다. 
-this = blog 인스턴스를 정상적으로 가리켜야 this.blogList가 호출이 되는데
+Class blog의 데이터 필드로써 blogList를 선언해주고 다른 메소드들 에서 `this.blogList`로 호출하려하자
+getData의 콜백함수였던 `insertPosts()`에서 오류가 발생한다. 
+`this`가 blog 인스턴스를 정상적으로 가리켜야 `this.blogList`가 호출이 되는데,
 this의 참조가 소실되어 undefined 가 떠버리는 것.
-이럴 경우 .bind(this)를 이용해 this의 참조값을 바인딩 해준다.
+이럴 경우 `.bind(this)`를 이용해 this의 참조값을 바인딩 해준다.
 
 [main.js]
 ```javascript
@@ -242,7 +243,7 @@ insertPosts(list){
 ## 4. set 데이터 자료로 목록뷰 업데이트 해주기
 •목록dom을 업데이트 해주는 메소드 추가
 class에 set 데이터 자료로 찜목록뷰를 업데이트해주는 메소드를 추가한다.
-이 메소드는 set에 add()를 해준 이후 호출해주도록 한다.
+이 메소드는 `set`에 `add()`를 해준 이후 호출해주도록 한다.
 [main.js]
 ```javascript
 registerEvents(){
@@ -274,8 +275,8 @@ updatedLikedList(){
 
 
 •찜 완료 표시 및 찜 취소 기능 구현
-if else문을 추가하여서 클릭했을 때 최초 클릭이면 done 클래스를 추가해줘서 찜이 되었음을 표시하고
-만약 이미 찜이된 div라면(done클래스소유) done 클래스를 해지시켜준다.
+`if else문`을 추가하여서 클릭했을 때 최초 클릭이면 done 클래스를 추가해줘서 찜이 되었음을 표시하고
+만약 이미 찜이된 div라면 done 클래스를 해지시켜준다.
 [main.js]
 ```javascript
 registerEvents(){
